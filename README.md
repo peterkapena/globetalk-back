@@ -5,7 +5,9 @@ In the project directory, you can run:
 
 `npm install`  to install the packages.
 
-`npm start` to run the application
+`npm run compile` on a separate terminal to compile the ts onto js.
+
+`npm start` to run the application.
 
 ## Requirements
 `node` version 20
