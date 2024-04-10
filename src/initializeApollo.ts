@@ -17,7 +17,7 @@ app.use(
   jwtMiddleware()
 );
 
-const port = +process.env.APP_PORT;
+const port = +process.env.GRAPHQL_PORT || 4000;
 
 app.listen({ port });
 
