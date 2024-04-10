@@ -9,7 +9,8 @@ import { Field } from "type-graphql";
 import bcrypt from "bcrypt";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
 import base_model from "./base_model.js";
-import { SALT } from "../utils/common.js";
+
+const SALT = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT));
 
 function find_by_email(
   this: ReturnModelType<typeof UserClass, UserClassQueryHelpers>,
