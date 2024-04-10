@@ -12,6 +12,8 @@ let io = new Server(server, {
   }
 });
 
+////////////////////////////////////////////////////////////
+
 let users = {};
 
 let socketToRoom = {};
@@ -74,7 +76,7 @@ io.on('connection', socket => {
   })
 });
 
-
+///////////////////////////////////////////////////////////
 const PORT = +process.env.SOCKET_PORT || 4001;
 
 server.listen(PORT, () => {
