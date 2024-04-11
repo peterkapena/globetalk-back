@@ -12,10 +12,10 @@ services:
 
   backend:
     build:
-      context: ./globetalk-back  # Adjust this path to the backend directory's name
+      context: ./  # Adjust this path to the backend directory's name
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
     env_file:
-      - ./globetalk-back/.env.production  # Adjust path as necessary
+      - ./.env.production  # Adjust path as necessary
     restart: always
     networks:
       - peterkapena
