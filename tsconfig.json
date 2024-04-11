@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
-    "rootDirs": ["src"],
+    "rootDir": "src",  // Changed from rootDirs to rootDir
     "outDir": "./dist",
     "lib": ["es2021", "esnext.asynciterable"],
     "target": "es2021",
@@ -14,5 +14,12 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "allowJs": false
-  }
+  },
+  "include": [
+    "src/**/*"  // Explicitly include all files in the src directory
+  ],
+  "exclude": [
+    "node_modules",  // Standard practice to exclude node_modules
+    "**/*.test.ts"  // Exclude test files if necessary
+  ]
 }
