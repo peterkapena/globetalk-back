@@ -3,21 +3,19 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ../globetalk-front
-      dockerfile: ../globetalk-front/Dockerfile
-    depends_on:
-      - backend
+      context: ./globetalk-front  # Path relative to where you run docker-compose
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
     env_file:
-      - ./.env.production
+      - ./globetalk-front/.env.production  # Adjust path as necessary
     networks:
       - peterkapena
 
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./globetalk-back  # Adjust this path to the backend directory's name
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
     env_file:
-      - ./.env.production
+      - ./globetalk-back/.env.production  # Adjust path as necessary
     restart: always
     networks:
       - peterkapena
