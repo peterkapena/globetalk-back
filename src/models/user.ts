@@ -57,11 +57,11 @@ export default class UserClass extends base_model {
   @prop({ required: true, unique: true })
   username!: String;
 
-  @prop({ unique: true })
-  resetPasswordToken?: String;
+  // @prop({ unique: true })
+  // resetPasswordToken?: String;
 
-  @prop({ unique: true })
-  resetPasswordExpires?: Date;
+  // @prop({ unique: true })
+  // resetPasswordExpires?: Date;
 }
 
 export const UserModel = getModelForClass<

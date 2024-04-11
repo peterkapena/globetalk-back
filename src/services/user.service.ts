@@ -3,7 +3,7 @@ import { SigninInput, SigninOutput } from "../schema/user/signin.user.js";
 import bcrypt from "bcrypt";
 import { VerifyTokenOutput } from "../schema/user/token.verify.js";
 import jwt from "../utils/jwt.js";
-import crypto from "crypto";
+// import crypto from "crypto";
 
 export enum DuplicateCheck {
   EMAIL = 1,
@@ -114,57 +114,57 @@ class UserService {
     };
   }
 
-  async forgotPassword(email: String): Promise<boolean> {
-    //Verify that the email is in database
-    const user = await UserModel.find().find_by_email(email);
-    if (!user) {
-      throw new Error("User not found");
-    }
-    if (!process.env.DOMAIN_NAME) {
-      throw new Error("DOMAIN_NAME is not set");
-    }
+  // async forgotPassword(email: String): Promise<boolean> {
+  //   //Verify that the email is in database
+  //   const user = await UserModel.find().find_by_email(email);
+  //   if (!user) {
+  //     throw new Error("User not found");
+  //   }
+  //   if (!process.env.DOMAIN_NAME) {
+  //     throw new Error("DOMAIN_NAME is not set");
+  //   }
 
-    const token = crypto.randomBytes(20).toString("hex");
-    const expires = new Date(Date.now() + 3600000); // 1 hour from now
-    user.resetPasswordToken = token;
-    user.resetPasswordExpires = expires;
+  //   const token = crypto.randomBytes(20).toString("hex");
+  //   const expires = new Date(Date.now() + 3600000); // 1 hour from now
+  //   user.resetPasswordToken = token;
+  //   user.resetPasswordExpires = expires;
 
-    await user.save();
+  //   await user.save();
 
-    // const resetLink = `http://${process.env.DOMAIN_NAME}/reset-password/${token}`;
-    // const transporter = nodemailer.createTransport({
-    //   // ... configure with your SMTP server details
-    // });
+  //   // const resetLink = `http://${process.env.DOMAIN_NAME}/reset-password/${token}`;
+  //   // const transporter = nodemailer.createTransport({
+  //   //   // ... configure with your SMTP server details
+  //   // });
 
-    // await transporter.sendMail({
-    //   from: "reset-password@" + process.env.DOMAIN_NAME,
-    //   to: email,
-    //   subject: "Password Reset",
-    //   html: `<p>Please click on the following link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`,
-    // });
+  //   // await transporter.sendMail({
+  //   //   from: "reset-password@" + process.env.DOMAIN_NAME,
+  //   //   to: email,
+  //   //   subject: "Password Reset",
+  //   //   html: `<p>Please click on the following link to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`,
+  //   // });
 
-    return true;
-  }
+  //   return true;
+  // }
 
-  async resetPassword(token: String, newPassword: String): Promise<boolean> {
-    // Find user by token and check if token has expired
-    const user = await UserModel.findOne({
-      resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() },
-    });
+  // async resetPassword(token: String, newPassword: String): Promise<boolean> {
+  //   // Find user by token and check if token has expired
+  //   const user = await UserModel.findOne({
+  //     resetPasswordToken: token,
+  //     resetPasswordExpires: { $gt: Date.now() },
+  //   });
 
-    if (!user) {
-      throw new Error("Password reset token is invalid or has expired");
-    }
+  //   if (!user) {
+  //     throw new Error("Password reset token is invalid or has expired");
+  //   }
 
-    // Update user's password and clear the reset token fields
-    user.password = newPassword;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
+  //   // Update user's password and clear the reset token fields
+  //   user.password = newPassword;
+  //   user.resetPasswordToken = undefined;
+  //   user.resetPasswordExpires = undefined;
 
-    await user.save();
-    return true;
-  }
+  //   await user.save();
+  //   return true;
+  // }
 }
 
 export default UserService;
