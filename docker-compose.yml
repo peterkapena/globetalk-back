@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ../globetalk-front
+      dockerfile: ../globetalk-front/Dockerfile
+    depends_on:
+      - backend
+    env_file:
+      - ./.env.production
+    networks:
+      - peterkapena
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env.production
+    restart: always
+    networks:
+      - peterkapena
+
+networks:
+  peterkapena:
+    external: true
