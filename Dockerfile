@@ -10,7 +10,7 @@ RUN npm install -g typescript
 
 COPY . .
 
-RUN npm run build
+RUN npm run build && ls -al dist
 
 ENV NODE_ENV production
 
