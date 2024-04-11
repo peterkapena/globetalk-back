@@ -7,7 +7,7 @@
   "scripts": {
     "compile": "tsc --watch",
     "build": "tsc -p tsconfig.json",
-    "start": "nodemon --env-file=.env dist/src/index.js",
+    "start": "nodemon --env-file=.env.development dist/index.js",
     "test": "jest"
   },
   "author": "Kapena Peter",
