@@ -3,6 +3,7 @@ version: '3.8'
 services:
   frontend:
     image: globetalk-front
+    container_name: globetalk-front
     build:
       context: ../globetalk-front  # Path relative to where you run docker-compose
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
@@ -13,6 +14,7 @@ services:
 
   backend:
     image: globetalk-back
+    container_name: globetalk-back
     build:
       context: ./  # Adjust this path to the backend directory's name
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back

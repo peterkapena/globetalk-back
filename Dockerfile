@@ -8,6 +8,7 @@ RUN npm ci --only=production
 
 COPY . .
 
+RUN npm i typescript
 RUN npm run build
 
 ENV NODE_ENV production
