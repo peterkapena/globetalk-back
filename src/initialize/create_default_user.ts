@@ -2,6 +2,8 @@ import UserService from "../services/user.service.js";
 
 export default (async function () {
   console.log("create default user")
+  console.log(process.env.PETER_KAPENA_EMAIL)
+  console.log(process.env.PETER_KAPENA_PASSWORD)
   process.env.PETER_KAPENA_PASSWORD &&
     process.env.PETER_KAPENA_EMAIL &&
     (await new UserService().signUp(
