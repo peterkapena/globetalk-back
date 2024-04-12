@@ -7,9 +7,7 @@ const app = express();
 const server = createServer(app);
 
 let io = new Server(server, {
-  cors: {
-    origin: process.env.ORIGINS.split(";"),
-  }
+  cors: {  }
 });
 
 ////////////////////////////////////////////////////////////

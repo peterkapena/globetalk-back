@@ -10,9 +10,7 @@ await apolloServer.start();
 
 app.use(
   "/",
-  cors({
-    origin: process.env.ORIGINS.split(";"),
-  }),
+  cors(),
   bodyParser.json(),
   jwtMiddleware()
 );
