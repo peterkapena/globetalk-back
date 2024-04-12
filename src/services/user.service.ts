@@ -19,6 +19,7 @@ class UserService {
     duplicateCheck: DuplicateCheck = DuplicateCheck.EMAIL
   ): Promise<boolean> {
     const isDuplicate = await this.isDuplicate(email, username, duplicateCheck);
+    console.log("isDuplicate")
 
     if (isDuplicate) {
       return false;
@@ -30,6 +31,7 @@ class UserService {
       roles: [],
       username: username || email,
     };
+    console.log("signUp - create")
     await UserModel.create(user);
 
     return true;
