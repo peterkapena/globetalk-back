@@ -1,6 +1,5 @@
 import { ApolloServer } from "@apollo/server";
 import { unwrapResolverError } from "@apollo/server/errors";
-import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 import schema from "../schema/schema.js";
 
@@ -22,9 +21,7 @@ const apolloServer = new ApolloServer({
     return formattedError;
   },
   plugins: [
-    process.env.NODE_ENV === "production" && !process.env.IS_TEST
-      ? ApolloServerPluginLandingPageDisabled()
-      : ApolloServerPluginLandingPageLocalDefault(),
+    ApolloServerPluginLandingPageDisabled()
   ],
 });
 export default apolloServer
