@@ -7,6 +7,7 @@ import apolloServer from "./apolloServer.js";
 export default function jwtMiddleware() {
   return expressMiddleware(apolloServer, {
     context: async (ctx: Context) => {
+      console.log("apollo - jwtMiddleware - context")
       const token = ctx.req.headers.authorization || "";
       if (token) {
         try {
