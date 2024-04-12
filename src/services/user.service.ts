@@ -32,7 +32,7 @@ class UserService {
       username: username || email,
     };
     console.log("signUp - create")
-    console.log(await UserModel.create(user));
+    console.log((await UserModel.create(user))._id);
 
     return true;
   }
