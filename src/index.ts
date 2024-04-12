@@ -19,6 +19,7 @@ const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
     schema,
+    introspection: true,
     formatError: (formattedError, error) => {
         // unwrapResolverError removes the outer GraphQLError wrapping from
         // errors thrown in resolvers, enabling us to check the instance of
