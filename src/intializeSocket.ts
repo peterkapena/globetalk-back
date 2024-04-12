@@ -7,7 +7,7 @@ const app = express();
 const server = createServer(app);
 
 let io = new Server(server, {
-  cors: {  }
+  cors: { origin: "*" }
 });
 
 ////////////////////////////////////////////////////////////
