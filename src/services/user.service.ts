@@ -31,8 +31,9 @@ class UserService {
       roles: [],
       username: username || email,
     };
-    console.log("signUp - create")
     console.log((await UserModel.create(user))._id);
+    console.log(await UserModel.find())
+    console.log("signUp - UserModel.create")
 
     return true;
   }
