@@ -16,4 +16,4 @@ ENV NODE_ENV production
 
 EXPOSE 4000 4001
 
-CMD ["nodemon", "--env-file=.env.production", "dist/index.js"]
+CMD ["node", "--env-file=.env.production", "dist/index.js"]
