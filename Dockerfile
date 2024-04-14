@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN npm ci
 
-RUN npm install -g typescript
+# RUN npm install -g typescript
 
 COPY . .
 
@@ -16,4 +16,4 @@ ENV NODE_ENV production
 
 EXPOSE 4000 4001
 
-CMD ["node", "./dist/index.js"]
+CMD ["nodemon", "--env-file=.env.production", "dist/index.js"]
