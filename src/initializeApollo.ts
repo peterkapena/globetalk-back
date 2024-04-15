@@ -39,12 +39,11 @@ const server = new ApolloServer({
 await server.start();
 
 app.use(
-    '/graphql',
+    '/',
     cors<cors.CorsRequest>({ origin: "*" }),
     express.json(),
     expressMiddleware(server, {
         context: async (ctx: Context) => {
-            console.log("apollo - jwtMiddleware - context")
             const token = ctx.req.headers.authorization || "";
             if (token) {
                 try {
