@@ -1,12 +1,10 @@
 services:
-  # globetalk-front:
-  #   build:
-  #     context: ../globetalk-front  # Path relative to where you run docker-compose
-  #     dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
-  #   env_file:
-  #     - ../globetalk-front/.env.production  # Adjust path as necessary
-  #   networks:
-  #     - peterkapena
+  globetalk-front:
+    build:
+      context: ../globetalk-front  # Path relative to where you run docker-compose
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
+    env_file:
+      - ../globetalk-front/.env.production  # Adjust path as necessary
 
   globetalk-back:
     build:
