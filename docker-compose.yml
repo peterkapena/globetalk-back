@@ -9,8 +9,6 @@ services:
   #     - peterkapena
 
   globetalk-back:
-    ports:
-      - "4000:4000"
     build:
       context: ./  # Adjust this path to the backend directory's name
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
