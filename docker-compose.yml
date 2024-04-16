@@ -17,7 +17,7 @@ services:
       - mongo
 
   nginx:
-    image: nginx:alpine
+    image: nginx
     ports:
       - "80:80"
       - "443:443"
