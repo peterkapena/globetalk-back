@@ -1,27 +1,39 @@
 services:
-  frontend:
-    image: globetalk-front
-    container_name: globetalk-front
-    build:
-      context: ../globetalk-front  # Path relative to where you run docker-compose
-      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
-    env_file:
-      - ../globetalk-front/.env.production  # Adjust path as necessary
-    networks:
-      - peterkapena
+  # globetalk-front:
+  #   build:
+  #     context: ../globetalk-front  # Path relative to where you run docker-compose
+  #     dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
+  #   env_file:
+  #     - ../globetalk-front/.env.production  # Adjust path as necessary
+  #   networks:
+  #     - peterkapena
 
-  backend:
-    image: globetalk-back
-    container_name: globetalk-back
+  globetalk-back:
+    ports:
+      - "4000:4000"
     build:
       context: ./  # Adjust this path to the backend directory's name
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
     env_file:
       - ./.env.production  # Adjust path as necessary
     restart: always
-    networks:
-      - peterkapena
+    depends_on:
+      - mongo
 
-networks:
-  peterkapena:
-    external: true
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - globetalk-back
+
+  mongo:
+    image: mongo
+    environment:
+      - MONGO_INITDB_DATABASE=globetalk
+    volumes:
+      - mongodb_data:/data/db
+
