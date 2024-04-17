@@ -10,6 +10,7 @@ import jwt from "./utils/jwt.js";
 import { unwrapResolverError } from "@apollo/server/errors";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
+import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -33,14 +34,19 @@ const server = new ApolloServer({
     },
     plugins: [
         ApolloServerPluginDrainHttpServer({ httpServer }),
-        ApolloServerPluginLandingPageLocalDefault()],
+        process.env.NODE_ENV === "production" && !process.env.IS_TEST
+            ? ApolloServerPluginLandingPageDisabled()
+            : ApolloServerPluginLandingPageLocalDefault(),
+    ],
 });
 
 await server.start();
 
 app.use(
     '/',
-    cors<cors.CorsRequest>({ origin: "*" }),
+    cors({
+        origin: process.env.ORIGINS.split(";"),
+    }),
     express.json(),
     expressMiddleware(server, {
         context: async (ctx: Context) => {
