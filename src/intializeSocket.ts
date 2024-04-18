@@ -11,23 +11,35 @@ let io = new Server(server, {
 
 ////////////////////////////////////////////////////////////
 
-let users = {};
+interface User {
+  id: string;
+  email: string;
+  language: string;
+}
 
-let socketToRoom = {};
+type RoomUsers = {
+  [roomId: string]: User[];
+};
 
-const maximum = process.env.MAXIMUM || 4;
+interface SocketToRoom {
+  [socketId: string]: string;
+}
+let users: RoomUsers = {};
+let socketToRoom: SocketToRoom = {};
+
+const maximum: number = parseInt(process.env.MAXIMUM || '4', 10);
 
 io.on('connection', socket => {
   socket.on('join_room', data => {
     if (users[data.room]) {
       const length = users[data.room].length;
       if (length === maximum) {
-        socket.to(socket.id).emit('room_full');
+        socket.emit('room_full');
         return;
       }
-      users[data.room].push({ id: socket.id, email: data.email });
+      users[data.room].push({ id: socket.id, email: data.email, language: data.language });
     } else {
-      users[data.room] = [{ id: socket.id, email: data.email }];
+      users[data.room] = [{ id: socket.id, email: data.email, language: data.language }];
     }
     socketToRoom[socket.id] = data.room;
 
@@ -43,18 +55,22 @@ io.on('connection', socket => {
 
   socket.on('offer', data => {
     //console.log(data.sdp);
-    socket.to(data.offerReceiveID).emit('getOffer', { sdp: data.sdp, offerSendID: data.offerSendID, offerSendEmail: data.offerSendEmail });
+    socket.to(data.offerReceiveID).emit('getOffer', data);
   });
 
   socket.on('answer', data => {
     //console.log(data.sdp);
-    socket.to(data.answerReceiveID).emit('getAnswer', { sdp: data.sdp, answerSendID: data.answerSendID });
+    socket.to(data.answerReceiveID).emit('getAnswer', data);
   });
 
   socket.on('candidate', data => {
     //console.log(data.candidate);
-    socket.to(data.candidateReceiveID).emit('getCandidate', { candidate: data.candidate, candidateSendID: data.candidateSendID });
+    socket.to(data.candidateReceiveID).emit('getCandidate', data);
   })
+
+  socket.on('updateLanguage', data => {
+    socket.emit("getLanguage", { language: data, id: socket.id });
+  });
 
   socket.on('disconnect', () => {
     console.log(`[${socketToRoom[socket.id]}]: ${socket.id} exit`);
