@@ -5,12 +5,14 @@ services:
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
     env_file:
       - ../globetalk-front/.env.production  # Adjust path as necessary
-    restart: always
 
   globetalk-back:
     build:
       context: ./  # Adjust this path to the backend directory's name
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
+    volumes:
+      - certdata:/etc/letsencrypt
+      - ./nginx/conf:/etc/nginx/conf.d
     env_file:
       - ./.env.production  # Adjust path as necessary
     restart: always
@@ -18,13 +20,15 @@ services:
       - mongo
 
   nginx:
-    image: nginx:alpine
+    build:
+      context: ./  # Adjust this path to the backend directory's name
+      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - globetalk-back
-    # restart: always
+      - globetalk-front
 
   mongo:
     image: mongo
@@ -32,7 +36,6 @@ services:
       - MONGO_INITDB_DATABASE=globetalk
     volumes:
       - mongodb_data:/data/db
-    restart: always
 
 volumes:
   mongodb_data:
