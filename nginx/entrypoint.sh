@@ -11,7 +11,7 @@ CERT_DIR="/etc/letsencrypt"
 
 # Check if the certificates already exist and request them if not
 if [ ! -d "$CERT_DIR/live" ]; then
-  certbot certonly --nginx \
+  certbot --nginx \
     -n --agree-tos --email peterkapenapeter@gmail.com \
     --domains api.globetalk.peterkapena.com,io.globetalk.peterkapena.com,globetalk.peterkapena.com
 fi
