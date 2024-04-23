@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Install certbot and the nginx plugin
-RUN apk add --no-cache certbot certbot-nginx
+RUN apk add --no-cache certbot certbot-nginx nano
 
 # Copy custom nginx configurations
 COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
