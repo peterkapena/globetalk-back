@@ -21,7 +21,7 @@ services:
 
   nginx:
     build:
-      context: ./  # Adjust this path to the backend directory's name
+      context: ./nginx  # Adjust this path to the backend directory's name
       dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
     ports:
       - "80:80"
