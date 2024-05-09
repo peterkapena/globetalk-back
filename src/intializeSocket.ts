@@ -37,6 +37,12 @@ io.on('connection', socket => {
         socket.emit('room_full');
         return;
       }
+
+      if (users[data.room].some(user => user.id === socket.id)) {
+        console.log(`User ${socket.id} already in room ${data.room}`);
+        return;
+      }
+      
       users[data.room].push({ id: socket.id, email: data.email, language: data.language });
     } else {
       users[data.room] = [{ id: socket.id, email: data.email, language: data.language }];
@@ -48,7 +54,7 @@ io.on('connection', socket => {
 
     const usersInThisRoom = users[data.room].filter(user => user.id !== socket.id);
 
-    console.log(usersInThisRoom);
+    console.log(users[data.room]);
 
     io.sockets.to(socket.id).emit('all_users', usersInThisRoom);
   });
