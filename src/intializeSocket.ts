@@ -42,7 +42,7 @@ io.on('connection', socket => {
         console.log(`User ${socket.id} already in room ${data.room}`);
         return;
       }
-      
+
       users[data.room].push({ id: socket.id, email: data.email, language: data.language });
     } else {
       users[data.room] = [{ id: socket.id, email: data.email, language: data.language }];
@@ -92,6 +92,15 @@ io.on('connection', socket => {
     }
     socket.to(roomID).emit('user_exit', { id: socket.id });
     console.log(users);
+  })
+
+  socket.on('muted', muted => {
+    const roomID = socketToRoom[socket.id];
+    socket.to(roomID).emit('muted', { muted, id: socket.id });
+  })
+
+  socket.on('mute_user', id => {
+    io.sockets.to(id).emit('mute_user');
   })
 });
 
