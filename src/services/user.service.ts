@@ -13,7 +13,7 @@ export enum DuplicateCheck {
 
 class UserService {
   async passwordUpdate(password: String, _id: String) {
-    await UserModel.findOneAndUpdate({ _id }, { password: password });
+    await UserModel.findOneAndUpdate({ _id }, { password });
     return true;
   }
 
