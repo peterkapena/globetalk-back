@@ -12,6 +12,11 @@ export enum DuplicateCheck {
 }
 
 class UserService {
+  async passwordUpdate(password: String, _id: String) {
+    await UserModel.findOneAndUpdate({ _id }, { password });
+    return true;
+  }
+
   async signUp(
     email: String,
     password: String,
@@ -30,7 +35,7 @@ class UserService {
       roles: [],
       username: username || email,
     };
-    await UserModel.create(user)
+    await UserModel.create(user);
 
     return true;
   }

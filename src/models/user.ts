@@ -31,6 +31,13 @@ export interface UserClassQueryHelpers {
 
 @queryMethod(find_by_email)
 @queryMethod(find_by_username)
+@pre<UserClass>('findOneAndUpdate', async function () {
+  let password = this.get("password");
+  if (password) {
+    password = await bcrypt.hash(password.toString(), SALT);
+    this.set("password", password)
+  }
+})
 @pre<UserClass>("save", async function () {
   if (!this.isModified("password")) {
     return;
