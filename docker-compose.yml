@@ -29,7 +29,7 @@ services:
 
   mtm-front:
     build:
-      context: ../mtm-front
+      context: ../mtm_front
       dockerfile: Dockerfile
     env_file:
       - ../mtm-front/.env.production
