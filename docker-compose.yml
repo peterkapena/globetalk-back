@@ -32,7 +32,7 @@ services:
       context: ../mtm_front
       dockerfile: Dockerfile
     env_file:
-      - ../mtm-front/.env.production
+      - ../mtm_front/.env.production
     depends_on:
       - mtm-back
 
