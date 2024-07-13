@@ -1,31 +1,51 @@
 services:
   globetalk-front:
     build:
-      context: ../globetalk-front  # Path relative to where you run docker-compose
-      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-front
+      context: ../globetalk-front
+      dockerfile: Dockerfile
     env_file:
-      - ../globetalk-front/.env.production  # Adjust path as necessary
+      - ../globetalk-front/.env.production
+    depends_on:
+      - globetalk-back
 
   globetalk-back:
     build:
-      context: ./  # Adjust this path to the backend directory's name
-      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
-    volumes:
-      - certdata:/etc/letsencrypt
-      - ./nginx/conf:/etc/nginx/conf.d
+      context: ./
+      dockerfile: Dockerfile
     env_file:
-      - ./.env.production  # Adjust path as necessary
+      - ./.env.production 
     restart: always
     depends_on:
       - mongo
 
+  mtm-back:
+    build:
+      context: ../mtm-back
+      dockerfile: Dockerfile
+    env_file:
+      - ../mtm-back/.env.production
+    depends_on:
+      - mongo
+
+  mtm-front:
+    build:
+      context: ../mtm-front
+      dockerfile: Dockerfile
+    env_file:
+      - ../mtm-front/.env.production
+    depends_on:
+      - mtm-back
+
   nginx:
     build:
-      context: ./nginx  # Adjust this path to the backend directory's name
-      dockerfile: Dockerfile  # Assuming Dockerfile is in the root of globetalk-back
+      context: ./nginx
+      dockerfile: Dockerfile
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - certdata:/etc/letsencrypt
+      - ./nginx/conf:/etc/nginx/conf.d
     depends_on:
       - globetalk-back
       - globetalk-front
