@@ -19,3 +19,4 @@ CMD ["/entrypoint.sh"]
 
 # git pull && docker compose up --build -d && docker ps -a
 # git pull && docker compose up -d --no-deps --build globetalk-front globetalk-back && docker compose restart
+# sudo  git pull && docker compose up -d --no-deps --build -d && docker compose restart
