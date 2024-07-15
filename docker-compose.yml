@@ -45,7 +45,7 @@ services:
       - "443:443"
     volumes:
       - certdata:/etc/letsencrypt
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      # - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - globetalk-back
       - globetalk-front
