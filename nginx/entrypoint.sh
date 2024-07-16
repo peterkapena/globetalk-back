@@ -13,7 +13,7 @@ CERT_DIR="/etc/letsencrypt"
 # if [ ! -d "$CERT_DIR/live" ]; then
   certbot --nginx \
     -n --agree-tos --email peterkapenapeter@gmail.com \
-    --domains api.globetalk.peterkapena.com,io.globetalk.peterkapena.com,globetalk.peterkapena.com
+    --domains api.globetalk.peterkapena.com,io.globetalk.peterkapena.com,globetalk.peterkapena.com,api.mtm.peterkapena.com,mtm.peterkapena.com
 # fi
 
 # Loop to keep the container running and renew certificates

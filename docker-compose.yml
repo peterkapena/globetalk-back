@@ -18,23 +18,23 @@ services:
     depends_on:
       - mongo
 
-  # mtm-back:
-  #   build:
-  #     context: ../mtm-back
-  #     dockerfile: Dockerfile
-  #   env_file:
-  #     - ../mtm-back/.env.production
-  #   depends_on:
-  #     - mongo
+  mtm-back:
+    build:
+      context: ../mtm-back
+      dockerfile: Dockerfile
+    env_file:
+      - ../mtm-back/.env.production
+    depends_on:
+      - mongo
 
-  # mtm-front:
-  #   build:
-  #     context: ../mtm_front
-  #     dockerfile: Dockerfile
-  #   env_file:
-  #     - ../mtm_front/.env.production
-  #   depends_on:
-  #     - mtm-back
+  mtm-front:
+    build:
+      context: ../mtm_front
+      dockerfile: Dockerfile
+    env_file:
+      - ../mtm_front/.env.production
+    depends_on:
+      - mtm-back
 
   nginx:
     build:
@@ -45,7 +45,7 @@ services:
       - "443:443"
     volumes:
       - certdata:/etc/letsencrypt
-      # - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - globetalk-back
       - globetalk-front
