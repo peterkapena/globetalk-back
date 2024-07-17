@@ -12,6 +12,7 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 
+console.log(process.env.ORIGINS)
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
@@ -42,10 +43,13 @@ const server = new ApolloServer({
 
 await server.start();
 
+const origin = process.env.ORIGINS.split(';')
+console.log(origin.includes('*'))
+
 app.use(
     '/',
     cors({
-        origin: process.env.ORIGINS.split(";"),
+        origin: origin.includes('*') ? '*' : origin,
     }),
     express.json(),
     expressMiddleware(server, {
