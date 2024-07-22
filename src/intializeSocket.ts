@@ -1,6 +1,7 @@
 import express from 'express';
 import { createServer } from 'node:http';
 import { Server } from "socket.io";
+import { UserType } from './models/user.js';
 
 const app = express();
 const server = createServer(app);
@@ -15,6 +16,8 @@ interface User {
   id: string;
   email: string;
   language: string;
+  isHost: boolean;
+  userType: UserType;
 }
 
 type RoomUsers = {
@@ -27,14 +30,22 @@ interface SocketToRoom {
 let users: RoomUsers = {};
 let socketToRoom: SocketToRoom = {};
 
-const maximum: number = parseInt(process.env.MAXIMUM || '4', 10);
+const BASIC_USER_LIMIT: number = 2// parseInt(process.env.BASIC_USER_LIMIT || '6');
 
 io.on('connection', socket => {
   socket.on('join_room', data => {
     if (users[data.room]) {
       const length = users[data.room].length;
-      if (length === maximum) {
+
+      const { userType: hostUserType } = users[data.room].find(u => u.isHost);
+
+      console.log(length)
+      console.log(hostUserType)
+      console.log(length === BASIC_USER_LIMIT)
+
+      if (length === BASIC_USER_LIMIT && hostUserType === UserType.BASIC) {
         socket.emit('room_full');
+        console.log(length)
         return;
       }
 
@@ -43,9 +54,9 @@ io.on('connection', socket => {
         return;
       }
 
-      users[data.room].push({ id: socket.id, email: data.email, language: data.language });
+      users[data.room].push({ id: socket.id, email: data.email, language: data.language, isHost: false, userType: data.UserType });
     } else {
-      users[data.room] = [{ id: socket.id, email: data.email, language: data.language }];
+      users[data.room] = [{ id: socket.id, email: data.email, language: data.language, isHost: true, userType: data.userType }];
     }
     socketToRoom[socket.id] = data.room;
 

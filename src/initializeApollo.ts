@@ -12,7 +12,6 @@ import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 
-console.log(process.env.ORIGINS)
 const app = express();
 const httpServer = http.createServer(app);
 const server = new ApolloServer({
