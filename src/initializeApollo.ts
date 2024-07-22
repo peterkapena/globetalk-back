@@ -44,7 +44,6 @@ const server = new ApolloServer({
 await server.start();
 
 const origin = process.env.ORIGINS.split(';')
-console.log(origin.includes('*'))
 
 app.use(
     '/',
