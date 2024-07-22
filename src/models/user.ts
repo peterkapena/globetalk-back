@@ -10,6 +10,11 @@ import bcrypt from "bcrypt";
 import { AsQueryMethod, ReturnModelType } from "@typegoose/typegoose/lib/types";
 import base_model from "./base_model.js";
 
+export enum UserType {
+  BASIC,
+  PREMIUM
+}
+
 const SALT = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT));
 
 function find_by_email(
@@ -69,6 +74,9 @@ export default class UserClass extends base_model {
 
   // @prop({ unique: true })
   // resetPasswordExpires?: Date;
+
+  @prop({ unique: true, default: UserType.BASIC })
+  userType?: UserType;
 }
 
 export const UserModel = getModelForClass<

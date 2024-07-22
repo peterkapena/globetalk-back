@@ -1,4 +1,4 @@
-import UserClass, { UserModel } from "../models/user.js";
+import UserClass, { UserModel, UserType } from "../models/user.js";
 import { SigninInput, SigninOutput } from "../schema/user/signin.user.js";
 import bcrypt from "bcrypt";
 import { VerifyTokenOutput } from "../schema/user/token.verify.js";
@@ -95,7 +95,7 @@ class UserService {
     return out;
   }
 
-  async verifyToken(inputToken: String) {
+  async verifyToken(inputToken: String): Promise<VerifyTokenOutput> {
     if (inputToken)
       try {
         const decoded = jwt.decodeJwt<UserClass>(inputToken.toString());
@@ -104,6 +104,7 @@ class UserService {
 
         if (user._id)
           return {
+            userType: user.userType,
             isValid: true,
             token: inputToken,
             email: user.email,
@@ -116,7 +117,18 @@ class UserService {
       isValid: false,
       token: inputToken,
       email: "",
+      userType: null
     };
+  }
+
+  async setUserType(userType: UserType, userId: String): Promise<Boolean> {
+    try {
+      await UserModel.findByIdAndUpdate(userId, { userType })
+      return true
+    } catch (error) {
+      console.log(error)
+      return false
+    }
   }
 
   // async forgotPassword(email: String): Promise<boolean> {

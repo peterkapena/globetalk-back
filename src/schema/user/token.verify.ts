@@ -10,4 +10,7 @@ export class VerifyTokenOutput {
 
   @Field(() => String)
   token!: String;
+
+  @Field(() => Number, { nullable: true })
+  userType!: Number;
 }

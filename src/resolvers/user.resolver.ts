@@ -2,8 +2,9 @@ import { Mutation, Resolver, Arg, Query, Ctx } from "type-graphql";
 import { VerifyTokenOutput } from "../schema/user/token.verify.js";
 import UserService from "../services/user.service.js";
 import { SigninOutput, SigninInput } from "../schema/user/signin.user.js";
-import { SignupInput,  } from "../schema/user/create.user.js";
+import { SignupInput, } from "../schema/user/create.user.js";
 import Context from "../models/context.js";
+import { UserType } from "../models/user.js";
 
 @Resolver()
 export default class UserResolver {
@@ -34,8 +35,14 @@ export default class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async passwordUpdate(@Arg("password") password: String, @Ctx() {user: {_id}}: Context) {
-    console.log(password);
+  async passwordUpdate(@Arg("password") password: String, @Ctx() { user: { _id } }: Context) {
+    // console.log(password);
     return this.userService.passwordUpdate(password, _id);
+  }
+
+  @Mutation(() => Boolean)
+  async setUserType(@Arg("userType") userType: UserType, @Ctx() { user: { _id } }: Context) {
+    // console.log(userType, _id);
+    return this.userService.setUserType(userType, _id);
   }
 }
