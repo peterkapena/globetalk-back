@@ -37,35 +37,34 @@ io.on('connection', socket => {
     if (users[data.room]) {
       const length = users[data.room].length;
 
-      const { userType: hostUserType } = users[data.room].find(u => u.isHost);
+      var host = users[data.room].find(u => u.isHost)
 
-      console.log(length)
-      console.log(hostUserType)
-      console.log(length === BASIC_USER_LIMIT)
-
-      if (length === BASIC_USER_LIMIT && hostUserType === UserType.BASIC) {
+      //If the host is a basic user, then the meeting is limited to a specific number of participants
+      if (length === BASIC_USER_LIMIT && host?.userType === UserType.BASIC) {
         socket.emit('room_full');
-        console.log(length)
+        // console.log(length)
         return;
       }
 
+      //check if this user is already in the room and exit so not add him twice
       if (users[data.room].some(user => user.id === socket.id)) {
-        console.log(`User ${socket.id} already in room ${data.room}`);
+        // console.log(`User ${socket.id} already in room ${data.room}`);
         return;
       }
 
-      users[data.room].push({ id: socket.id, email: data.email, language: data.language, isHost: false, userType: data.UserType });
+      users[data.room].push({ id: socket.id, email: data.email, language: data.language, isHost: false, userType: data.userType });
     } else {
       users[data.room] = [{ id: socket.id, email: data.email, language: data.language, isHost: true, userType: data.userType }];
     }
+
     socketToRoom[socket.id] = data.room;
 
     socket.join(data.room);
-    console.log(`[${socketToRoom[socket.id]}]: ${socket.id} enter`);
+    console.log(`[${socket.id}]: has entered in room ${socketToRoom[socket.id]}`);
 
     const usersInThisRoom = users[data.room].filter(user => user.id !== socket.id);
 
-    console.log(users[data.room]);
+    // console.log(users[data.room]);
 
     io.sockets.to(socket.id).emit('all_users', usersInThisRoom);
   });
@@ -90,19 +89,22 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
-    console.log(`[${socketToRoom[socket.id]}]: ${socket.id} exit`);
     const roomID = socketToRoom[socket.id];
-    let room = users[roomID];
-    if (room) {
-      room = room.filter(user => user.id !== socket.id);
-      users[roomID] = room;
-      if (room.length === 0) {
-        delete users[roomID];
-        return;
+    if (roomID) {
+      console.log(`[${roomID}]: ${socket.id} exit`);
+
+      let room = users[roomID];
+      if (room) {
+        room = room.filter(user => user.id !== socket.id);
+        users[roomID] = room;
+        if (room.length === 0) {
+          delete users[roomID];
+          return;
+        }
       }
+      socket.to(roomID).emit('user_exit', { id: socket.id });
+      // console.log(users);
     }
-    socket.to(roomID).emit('user_exit', { id: socket.id });
-    console.log(users);
   })
 
   socket.on('muted', muted => {
